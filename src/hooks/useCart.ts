@@ -1,9 +1,7 @@
 // hooks/useCart.ts
 import { useState, useEffect } from 'react';
 import { Product } from '@/types';
-
 import { CartItem } from '@/types';
-
 
 const useCart = () => {
     const [cart, setCart] = useState<CartItem[]>(() => {

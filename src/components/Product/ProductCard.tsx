@@ -29,16 +29,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
         className,
     }) => (
         <Image
-        src={imageUrl}
-        alt={alt}
-        width={100}
-        height={100}
-        className={className} />
+            src={imageUrl}
+            alt={alt}
+            width={100}
+            height={100}
+            className={className} />
     );
 
     const HorizontalLayout = () => (
-        <Link href={`/products/${product.id}`} passHref legacyBehavior>
-
         <div className="border border-gray-300 rounded-lg overflow-hidden shadow-lg max-w-xs mx-4 my-4 font-sans flex flex-col">
             <div className="relative w-full pt-[75%]">
                 <ProductImage
@@ -48,7 +46,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 />
             </div>
             <div className="p-4 flex-grow">
-                <h2 className="text-lg font-semibold mb-2">{product.title}</h2>
+                <Link href={`/products/${product.id}`} passHref legacyBehavior>
+                    <a className='text-lg font-semibold mb-2'>
+                        <h2>{product.title}</h2>
+                    </a>
+                </Link>
+
                 <p className="text-gray-600 mb-2">${product.price}</p>
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
@@ -58,7 +61,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </button>
             </div>
         </div>
-        </Link>
     );
 
     const VerticalLayout = () => (
