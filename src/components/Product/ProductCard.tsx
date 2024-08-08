@@ -2,6 +2,7 @@ import React from 'react';
 import { Product } from '@/types';
 import useCart from '@/hooks/useCart';
 import Stepper from './Stepper';
+import Link from 'next/link';
 
 interface ProductCardProps {
     product: Product & { quantity?: number };
@@ -19,14 +20,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
     onRemove,
 }) => {
     const { addToCart } = useCart();
-
     const imageUrl = Array.isArray(product.images) ? product.images[0] : product.images;
 
-    return layout === 'horizontal' ? (
+    const ProductImage: React.FC<{ imageUrl: string; alt: string; className: string }> = ({
+        imageUrl,
+        alt,
+        className,
+    }) => (
+        <img src={imageUrl} alt={alt} className={className} />
+    );
+
+    const HorizontalLayout = () => (
+        <Link href={`/products/${product.id}`} passHref legacyBehavior>
+
         <div className="border border-gray-300 rounded-lg overflow-hidden shadow-lg max-w-xs mx-4 my-4 font-sans flex flex-col">
             <div className="relative w-full pt-[75%]">
-                <img
-                    src={imageUrl}
+                <ProductImage
+                    imageUrl={imageUrl}
                     alt={product.title}
                     className="absolute inset-0 w-full h-full object-cover rounded-md"
                 />
@@ -42,11 +52,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </button>
             </div>
         </div>
-    ) : (
+        </Link>
+    );
+
+    const VerticalLayout = () => (
         <div className="mb-4 flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow-md">
             <div className="flex items-center">
-                <img
-                    src={imageUrl}
+                <ProductImage
+                    imageUrl={imageUrl}
                     alt={product.title}
                     className="w-16 h-16 object-cover rounded-md"
                 />
@@ -63,12 +76,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
             </div>
             <div className="flex items-center">
-                <div className="mr-4 text-right">
-                    <p className="text-gray-700">Quantity: {product.quantity}</p>
-                    <p className="text-gray-700">
-                        Total: ${(product.price * product.quantity!).toFixed(2)}
-                    </p>
-                </div>
                 {onRemove && (
                     <button
                         className="bg-gray-700 text-white px-2 py-1 rounded hover:bg-gray-600"
@@ -80,6 +87,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
         </div>
     );
+
+    return layout === 'horizontal' ? <HorizontalLayout /> : <VerticalLayout />;
 };
 
 export default ProductCard;

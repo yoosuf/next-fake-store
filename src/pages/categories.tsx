@@ -1,27 +1,24 @@
 import { GetServerSideProps } from 'next';
 import React from 'react';
-import { Category, Product } from '@/types';
+import { Category } from '@/types';
 import BaseLayout from '@/components/Layout/BaseLayout';
 import CategoryItem from '@/components/Category/CategoryItem';
-import Link from 'next/link';
 
-interface CategoriesProps {
+interface CatalogProps {
     categories: Category[];
 }
 
-const Categories: React.FC<CategoriesProps> = ({ categories }) => {
+const Catalog: React.FC<CatalogProps> = ({ categories }) => {
     return (
         <BaseLayout>
-
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">All categories</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {categories.map((category) => (
-                    <Link href="/${category.id}" key={category.id}>
+            <div className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-800 mb-4">Category</h1>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {categories.map((category) => (
                         <CategoryItem category={category} key={category.id} />
-                    </Link>
-                ))}
+                    ))}
+                </div>
             </div>
-
         </BaseLayout>
     );
 };
@@ -32,11 +29,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
         const categories: Category[] = await categoriesResponse.json();
 
         return { props: { categories: categories } };
-
     } catch (error) {
         console.error('Error fetching categories or products', error);
         return { props: { categories: [] } };
     }
 };
 
-export default Categories;
+export default Catalog;
